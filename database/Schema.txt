@@ -1,0 +1,101 @@
+DROP TABLE IF EXISTS violations;
+CREATE TABLE violations(
+	serial_key SERIAL   NOT NULL,
+    serial_number VARCHAR   NOT NULL,
+    violation_status VARCHAR   NOT NULL,
+    violation_code VARCHAR   NOT NULL,
+    points FLOAT   NOT NULL,
+    CONSTRAINT pk_violations PRIMARY KEY (
+        serial_key)
+);
+
+SELECT *
+from violations;
+
+DROP TABLE IF EXISTS violation_codes;
+CREATE TABLE violation_codes(
+	violation_code VARCHAR   NOT NULL,
+	violation_description VARCHAR   NOT NULL,
+	CONSTRAINT pk_violation_codes PRIMARY KEY (
+	violation_code)
+);
+
+
+SELECT *
+from violation_codes;
+
+
+DROP TABLE IF EXISTS facilities;
+Create table facilities (
+    facility_id VARCHAR   NOT NULL,
+    facility_name VARCHAR   NOT NULL,
+    facility_address VARCHAR   NOT NULL,
+    facility_city VARCHAR   NOT NULL,
+    facility_state VARCHAR   NOT NULL,
+    facility_zip VARCHAR   NOT NULL,
+    CONSTRAINT pk_facilities PRIMARY KEY (
+        facility_id)
+);
+
+SELECT *
+FROM facilities
+
+DROP TABLE IF EXISTS inspection_facilities;
+CREATE TABLE inspection_facilities (
+    activity_date date,
+    owner_id  VARCHAR NOT NULL,
+    owner_name VARCHAR NOT NULL,
+    record_id VARCHAR NOT NULL,
+    program_name VARCHAR NOT NULL,
+    program_status VARCHAR NOT NULL,
+	program_element VARCHAR NOT NULL,
+	pe_discription VARCHAR NOT NULL,
+	service_code VARCHAR NOT NULL,
+	service_description VARCHAR NOT NULL,
+	score int NOT NULL,
+	serial_number VARCHAR NOT NULL,
+	employee_id VARCHAR NOT NULL,
+	facility_id VARCHAR NOT NULL,
+	CONSTRAINT pk_inspection_facilities PRIMARY KEY(
+        serial_number)	
+);
+
+SELECT *
+FROM inspection_facilities;
+
+DROP TABLE IF EXISTS final_matches;
+Create table final_matches(
+	yelp_id VARCHAR NOT NULL,
+	la_facility_id VARCHAR NOT NULL,
+	yelp_name VARCHAR NOT NULL,
+	address1  VARCHAR NOT NULL,
+	address2 VARCHAR NOT NULL,
+	address3 VARCHAR NOT NULL,
+	city VARCHAR NOT NULL,
+	zip_code VARCHAR NOT NULL,
+	rating float NOT NULL,
+	categories json NOT NULL,
+	coordinates json NOT NULL,
+	CONSTRAINT pk_final_matches PRIMARY KEY(
+        la_facility_id)	
+);
+	
+	
+SELECT *
+FROM final_matches
+
+ALTER TABLE violations 
+ADD CONSTRAINT fk_violations_serial_number FOREIGN KEY(serial_number)
+REFERENCES inspection_facilities (serial_number);
+
+ALTER TABLE violations 
+ADD CONSTRAINT fk_violations_violation_code FOREIGN KEY(violation_code)
+REFERENCES violation_codes (violation_code);
+
+ALTER TABLE inspection_facilities 
+ADD CONSTRAINT fk_inspection_facilities_facility_id FOREIGN KEY(facility_id)
+REFERENCES facilities (facility_id);
+
+ALTER TABLE final_matches ADD CONSTRAINT fk_final_matches_la_facility_id FOREIGN KEY(la_facility_id)
+REFERENCES facilities (facility_id);
+
