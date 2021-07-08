@@ -1,4 +1,4 @@
-# Project_2_La_restaurants
+
 ## Restaurants in LA
 ![image](https://user-images.githubusercontent.com/75353991/112249468-133e8b80-8c15-11eb-9d8e-07e9de2e6f7a.png)
 ## Hungry Coyotes
